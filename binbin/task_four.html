@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IFE JavaScript Task 04</title>
+    <style>
+        li {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="input" type="text">
+    <button id="leftIn">leftIn</button>
+    <button id="rightIn">rightIn</button>
+    <button id="leftOut">leftOut</button>
+    <button id="rightOut">rightOut</button>
+
+    <div id="queue">
+
+    </div>
+
+    <script>
+        var input = document.getElementById('input'),
+            leftIn = document.getElementById('leftIn'),
+            rightIn = document.getElementById('rightIn'),
+            leftOut = document.getElementById('leftOut'),
+            rightOut = document.getElementById('rightOut'),
+            queue = document.getElementById('queue');
+
+        //从左侧添加元素
+        var leftInNum = function() {
+            if (input.value === '' || isNaN(input.value)) {
+                alert('Please enter a number!');
+                input.value = '';
+            } else {
+                var addBtn = document.createElement('button');
+                addBtn.innerText = input.value;
+                queue.insertBefore(addBtn, queue.firstChild);
+                input.value = '';
+            }
+        }
+
+        //从右侧添加元素
+        var rightInNum = function() {
+            if (input.value === '' || isNaN(input.value)) {
+                alert('Please enter a number!');
+                input.value = '';
+            } else {
+                var addBtn = document.createElement('button');
+                addBtn.innerText = input.value;
+                queue.appendChild(addBtn);
+                input.value = '';
+            }
+        }
+
+        leftIn.onclick = function() {
+            leftInNum();
+        };
+
+        rightIn.onclick = function() {
+            rightInNum();
+        };
+
+        //从左侧删除元素
+        leftOut.onclick = function() {
+            alert(queue.removeChild(queue.firstChild).innerText);
+        };
+
+        //从右侧删除元素
+        rightOut.onclick = function() {
+            alert(queue.removeChild(queue.lastChild).innerText);
+        }
+
+        //点击队列中的任一元素，可以删除该元素
+        queue.onclick = function() {
+            queue.removeChild(event.target);
+        }
+    </script>
+</body>
+
+</html>
