@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IFE JavaScript Task 05</title>
+    <style>
+        ul {
+            display: flex;
+            height: 250px;
+            align-items: flex-end;
+            justify-content: flex-start;
+        }
+        
+        li {
+            display: inline-block;
+            width: 20px;
+            margin: 2px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="input" type="text">
+    <button id="leftIn">leftIn</button>
+    <button id="rightIn">rightIn</button>
+    <button id="leftOut">leftOut</button>
+    <button id="rightOut">rightOut</button>
+    <button id="random">随机生成一组数据</button>
+    <button id="bubbleSort">冒泡排序</button>
+    <button id="clear">清除数据</button>
+
+    <ul id="queue">
+    </ul>
+
+    <script>
+        var input = document.getElementById('input'),
+            leftIn = document.getElementById('leftIn'),
+            rightIn = document.getElementById('rightIn'),
+            leftOut = document.getElementById('leftOut'),
+            rightOut = document.getElementById('rightOut'),
+            queue = document.getElementById('queue'),
+            random = document.getElementById('random'),
+            bubbleSort = document.getElementById('bubbleSort'),
+            clear = document.getElementById('clear'),
+            data = []; //用来存放数据
+
+        //生成随机颜色
+        var randomColor = function() {
+            var colorStr = ['#009999', '#009900'];
+            var randomNum = Math.floor(Math.random() * 2);
+            return colorStr[randomNum];
+        };
+
+        //判断输入合法性
+        var inputNum = function() {
+            if (input.value === '' || isNaN(input.value)) {
+                alert('请输入一个数字!');
+                input.value = '';
+                return 0;
+            }
+            if (input.value > 100 || input.value < 10) {
+                alert('请输入10-100以内的数字!');
+                input.value = '';
+                return 0;
+            }
+            if (data.length > 60) {
+                alert('数据超出界限!')
+                input.value = '';
+                return 0;
+            }
+        };
+
+        //插入数据
+        var insert = function() {
+            queue.innerText = '';
+            for (var i = 0; i < data.length; i++) {
+                var liElement = document.createElement('li');
+                liElement.innerText = data[i];
+                liElement.style.height = data[i] * 2 + 'px';
+                liElement.style.backgroundColor = randomColor();
+                queue.appendChild(liElement);
+            }
+        };
+
+        //随机生成一组数据
+        random.onclick = function() {
+            for (var i = 0; i < 40; i++) {
+                data[i] = Math.floor(Math.random() * 90 + 10);
+            }
+            insert();
+        };
+
+        //从左侧添加元素
+        var leftInNum = function() {
+            if (inputNum() === 0) return;
+            data.splice(0, 0, input.value);
+            insert();
+            input.value = '';
+        };
+
+        //从右侧添加元素
+        var rightInNum = function() {
+            if (inputNum() === 0) return;
+            data.push(input.value);
+            insert();
+            input.value = '';
+        };
+
+        leftIn.onclick = function() {
+            leftInNum();
+        };
+
+        rightIn.onclick = function() {
+            rightInNum();
+        };
+
+        //从左侧删除元素
+        leftOut.onclick = function() {
+            alert(data.shift());
+            insert();
+        };
+
+        //从右侧删除元素
+        rightOut.onclick = function() {
+            alert(data.pop());
+            insert();
+        };
+
+        //点击队列中的任一元素，可以删除该元素
+        queue.onclick = function(element) {
+            if (element.target.nodeName == 'LI') {
+                queue.removeChild(event.target);
+            }
+        };
+
+        //冒泡排序
+        bubbleSort.onclick = function() {
+
+            var i = 0,
+                j = 1,
+                temp,
+                len = data.length,
+                // timer = null,
+                timer = setInterval(run, 25);
+
+            function run() {
+                if (i < data.length) {
+                    if (j < data.length) {
+                        if (data[i] > data[j]) {
+                            tmp = data[i];
+                            data[i] = data[j];
+                            data[j] = tmp;
+                            insert();
+                        }
+                        j++;
+                    } else {
+                        i++;
+                        j = i + 1;
+                    }
+                } else {
+                    clearInterval(timer);
+                    return;
+                }
+            };
+        };
+
+        //清空数据
+        clear.onclick = function() {
+            data.splice(0, data.length);
+            insert();
+        };
+    </script>
+</body>
+
+</html>
