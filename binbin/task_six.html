@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IFE JavaScript Task 06</title>
+    <style>
+        #list {
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+        }
+        
+        #list div {
+            background-color: #099;
+            height: 40px;
+            line-height: 3.5;
+            width: 40px;
+            text-align: center;
+            margin: 10px;
+        }
+        
+        #list span {
+            background-color: #900;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="input"></textarea>
+    <div>
+        <button id="insert">插入数据</button>
+        <button id="search">查询数据</button>
+        <input id="search_input" type="text">
+    </div>
+
+    <div id="list"></div>
+
+    <script>
+        var $ = function(selector) {
+            return document.querySelector(selector);
+        }
+
+        var data = []; //用于存放数据
+
+        //插入数据
+        $('#insert').onclick = function() {
+            var letter = $('#input').value.trim().split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function(element) {
+                if (element != null && element.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            data = data.concat(letter);
+            display();
+        }
+
+        //查询文本
+        $('#search').onclick = function() {
+            var searchInput = $('#search_input').value.trim();
+            display(searchInput);
+        }
+
+        //显示插入和查询的元素
+        var display = function(str) {
+            $('#list').innerHTML = data.map(function(char) {
+                if (str != null && str.length > 0) {
+                    char = char.replace(new RegExp(str, 'g'), "<span class='select'>" + str + "</span>");
+                }
+                return "<div>" + char + "</div>";
+            }).join('');
+        }
+    </script>
+</body>
+
+</html>
